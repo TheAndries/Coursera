@@ -12,17 +12,44 @@ np.set_printoptions(suppress=True)
 # (Normalisation doesn't matter here)
 # The functions inputs are the linkMatrix, and d the damping parameter - as defined in this worksheet.
 # (The damping parameter, d, will be set by the function - no need to set this yourself.)
+L = generate_internet(10)
+
 def pageRank(linkMatrix, d) :
+    L2 = np.array(linkMatrix)
     n = linkMatrix.shape[0]
-    
-    r = 100 * np.ones(10) / 10 # Sets up this vector (6 entries of 1/6 × 100 each)
+    L2 = L.astype(int)
+
+    d = 0.5 # Feel free to play with this parameter after running the code once.
+    M = d * L + (1-d)/n * np.ones(n)
+
+    r = 100 * np.ones(n) / n # Sets up this vector (6 entries of 1/6 × 100 each)
     lastR = r
-    r = n @ r
+    r = M @ r
     i = 0
     while la.norm(lastR - r) > 0.01 :
         lastR = r
-        r = n @ r
+        r = M @ r
         i += 1
     print(str(i) + " iterations to convergence.")
+    r
     return r
 
+
+def pageRank(linkMatrix, d) :
+    L = np.array(linkMatrix)
+    n = linkMatrix.shape[0]
+
+    d = 0.5 # Feel free to play with this parameter after running the code once.
+    M = d * L + (1-d)/n * np.ones(n)
+
+    r = 100 * np.ones(n) / n # Sets up this vector (6 entries of 1/6 × 100 each)
+    lastR = r
+    r = M @ r
+    i = 0
+    while la.norm(lastR - r) > 0.01 :
+        lastR = r
+        r = M @ r
+        i += 1
+    print(str(i) + " iterations to convergence.")
+    r
+    return r
